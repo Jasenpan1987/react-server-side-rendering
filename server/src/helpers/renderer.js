@@ -2,6 +2,7 @@ import React from "react";
 import { renderToString } from "react-dom/server";
 import { StaticRouter } from "react-router-dom";
 import { Provider } from "react-redux";
+import { renderRoutes } from "react-router-config";
 import Routes from "../client/Routes";
 
 // We should have two routings for both of the client render and
@@ -15,7 +16,7 @@ export default function(req, store) {
         location={req.path}
         context={{}} // for some redirect and error handling
       >
-        <Routes />
+        <div>{renderRoutes(Routes)}</div>
       </StaticRouter>
     </Provider>
   );

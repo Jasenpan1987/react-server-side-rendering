@@ -38,4 +38,11 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
+// this function is made for server side "componentDidMount"
+function loadData(store) {
+  return store.dispatch(fetchUsers());
+}
+
+export { loadData };
+
 export default connect(mapStateToProps, mapDispatchToProps)(UserList);

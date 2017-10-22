@@ -4,6 +4,8 @@ import { renderToString } from "react-dom/server";
 import { StaticRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import { renderRoutes } from "react-router-config";
+import { Helmet } from "react-helmet";
+
 import Routes from "../client/Routes";
 
 // We should have two routings for both of the client render and
@@ -22,9 +24,14 @@ export default function(req, store, context) {
       </StaticRouter>
     </Provider>
   );
+
+  const helmet = Helmet.renderStatic(); // returns all the tags
+
   return `
     <html>
       <head>
+      ${helmet.title.toString()}
+      ${helmet.meta.toString()}
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
       </head>
       <body>

@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 
 import { fetchUsers } from "../actions";
 
-class UserList extends Component {
+class UserListPage extends Component {
   componentDidMount() {
     this.props.fetchUsers();
   }
@@ -40,9 +40,13 @@ function mapDispatchToProps(dispatch) {
 
 // this function is made for server side "componentDidMount"
 function loadData(store) {
+  // console.log(store.dispatch(fetchUsers())) // promise
   return store.dispatch(fetchUsers());
 }
 
 export { loadData };
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserList);
+export default {
+  loadData: loadData,
+  component: connect(mapStateToProps, mapDispatchToProps)(UserListPage)
+};

@@ -10,12 +10,13 @@ import Routes from "../client/Routes";
 // the server render. On the server side, we have to use the 
 // StaticRouter rather than the BrowserRouter in the client Routes
 
-export default function(req, store) {
+export default function(req, store, context) {
+  // console.log(context);
   const content = renderToString(
     <Provider store={store}>
       <StaticRouter
         location={req.path}
-        context={{}} // for some redirect and error handling
+        context={context} // for some redirect and error handling
       >
         <div>{renderRoutes(Routes)}</div>
       </StaticRouter>

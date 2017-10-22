@@ -28,7 +28,14 @@ app.get("*", (req, res) => {
   }); // returns an array of promises
 
   Promise.all(promises).then(() => {
-    res.send(renderer(req, store));
+    const context = {};
+    const content = renderer(req, store, context); // modifies context
+    
+    if (context.notFound) {
+      res.status(404);
+    }
+
+    res.send(content);
   });
 });
 

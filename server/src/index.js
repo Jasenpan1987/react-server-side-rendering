@@ -12,8 +12,8 @@ const app = express();
 
 // proxy has to be the first route or middleware
 app.use("/api", proxy(PROXY_BASE, { // this second param is only required for this end point
-  proxyReqDecorator(opts) {
-    opts.headers["x-forwarded-host"] = "localhost:3000";
+  proxyReqOptDecorator(opts) {
+    opts.headers["x-forwarded-host"] = "localhost:3000"; // come back destination
     return opts;
   }
 })); // any request for /api will be send to proxy base

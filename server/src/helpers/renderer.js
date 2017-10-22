@@ -11,7 +11,7 @@ import Routes from "../client/Routes";
 // StaticRouter rather than the BrowserRouter in the client Routes
 
 export default function(req, store, context) {
-  // console.log(context);
+  // console.log("context renderer::", context);
   const content = renderToString(
     <Provider store={store}>
       <StaticRouter

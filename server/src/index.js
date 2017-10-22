@@ -25,12 +25,25 @@ app.get("*", (req, res) => {
 
   const promises = matchRoutes(Routes, req.path).map(({ route }) => {
     return route.loadData ? route.loadData(store) : null;
-  }); // returns an array of promises
+  }).map(promiseOrNull => {
+    // wrapp with a promise for let the Promise.all resolve all the time
+    if (promiseOrNull) {
+      return new Promise((resolve, reject) => {
+        promiseOrNull
+          .then(resolve)
+          .catch(resolve);
+      })
+    }
+  });
 
   Promise.all(promises).then(() => {
     const context = {};
     const content = renderer(req, store, context); // modifies context
-    
+    console.log("context", context);
+    if (context.url) { // blocked by requireAuth
+      return res.redirect(302, context.url);
+    }
+
     if (context.notFound) {
       res.status(404);
     }

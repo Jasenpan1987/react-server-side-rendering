@@ -6,22 +6,22 @@ import Routes from "./client/Routes";
 import renderer from "./helpers/renderer";
 import createStore from "./helpers/createStore";
 
-const PROXY_BASE = "http://react-ssr-api.heroku.com";
+const PROXY_BASE = "http://react-ssr-api.herokuapp.com";
 
 const app = express();
 
 // proxy has to be the first route or middleware
 app.use("/api", proxy(PROXY_BASE, { // this second param is only required for this end point
   proxyReqDecorator(opts) {
-    opts.header["x-forwarded-host"] = "localhost:3000";
+    opts.headers["x-forwarded-host"] = "localhost:3000";
     return opts;
   }
 })); // any request for /api will be send to proxy base
 
-app.use(express.static("public"))
+app.use(express.static("public"));
 
 app.get("*", (req, res) => {
-  const store = createStore();
+  const store = createStore(req);
 
   const promises = matchRoutes(Routes, req.path).map(({ route }) => {
     return route.loadData ? route.loadData(store) : null;

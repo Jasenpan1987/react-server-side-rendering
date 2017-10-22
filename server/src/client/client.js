@@ -7,16 +7,21 @@ import { applyMiddleware, createStore } from "redux";
 import thunk from "redux-thunk";
 import { Provider } from "react-redux";
 import { renderRoutes } from "react-router-config";
+import axios from "axios";
 
 import rootReducer from "./reducers";
 
 import Routes from "./Routes";
 
+const axiosInstance = axios.create({ // create axios instance and pass it with thunk
+  baseURL: "/api"
+});
+
 // this is the store on the client side, and we will have a store on the server side too
 const store = createStore(
   rootReducer,
   window.INITIAL_STATE, // from server
-  applyMiddleware(thunk)
+  applyMiddleware(thunk.withExtraArgument(axiosInstance))
 );
 
 reactDOM.hydrate(
